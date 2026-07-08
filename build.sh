@@ -31,14 +31,18 @@ LIBTINS_VERSION=$(./resources/libtins_version.sh)
 # Fullbuild or nonexistent venv
 if [ ${FULLBUILD} = true -o ! -d .venv ]; then
     rm -Rf .venv
-    python3 -m venv .venv
+    if [ ! "$(command -v python3.12)" ]; then
+        echo "python3.12 is required"
+        exit 1
+    fi
+
+    python3.12 -m venv .venv
     if [ $? != 0 ]; then
         echo "Error: Could not create the venv. Please make sure the 'venv' Python-module is installed."
         exit
     fi
 fi
 
-# Activate the venv
 source .venv/bin/activate
 
 # Upgrade pip if necessary
